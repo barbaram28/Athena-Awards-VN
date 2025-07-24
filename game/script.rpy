@@ -69,7 +69,10 @@ label start:
     "Why do you deal with his taunts? You know he's just trying to get under your skin, but you can't help but feel a twinge of irritation."
     V "Whatever, I won't waste your precious time."
     "That's a first."
-    V ""
+    V "You're...probably wondering why I asked to have your aquaintance here, if I had to take a guess."
+    H "It's definitely unusual..."
+    "Villain sinks a nail into his lip, as he flashes you a daunting grin."
+    H "You have no reasoning to be smiling."
 
     # This ends the game.
 
