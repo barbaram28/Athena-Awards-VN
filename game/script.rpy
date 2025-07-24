@@ -73,7 +73,45 @@ label start:
     H "It's definitely unusual..."
     "Villain sinks a nail into his lip, as he flashes you a daunting grin."
     H "You have no reasoning to be smiling."
-
-    # This ends the game.
+    V "What, not in a good mood? You should see how it feels to be in a cell, HERO."
+    H "I mean it. You shouldn't be taking this lightly. Just get whatever you wanted to say over with."
+    V "Wh--"
+    H "In as {i}little{/i} words as possible. " 
+    extend "Please."
+    ". . ."
+    "His brittle smile shatters into an understanding expression. You've never seen him at such a loss for words before. 
+    It's...almost frightening, unlike the usual persona he puts on."
+    V "I..didn't tell you to come so I could insult you, as fun as that sounds."
+    H "You didn't?"
+    "Huh."
+    V "No, I,,I--we've been at this whole..cat-and-mouse game for quite a while now, haven't we? I soak in what glory I can,
+    you get jealous and try to push me off my pedestal.."
+    H "That's not--"
+    V "--well, I'm starting to believe that this is..the end of that chase."
+    "Is..he being serious? You thought the implications of the cage were enough to suggest that, but perhaps you were wrong."
+    "VILLAIN averts his eyes from you, and you can see sparks fly from his augmentations, almost as if his head is finally being put to a use for good."
+    H "You just {i}now{/i} caught onto that?"
+    V "Byte me. Look, in truth, my predicament has left me to ponder some things. Some..attributes associated with the aftermath of my.."
+    extend "(cough)."
+    "You've never seen VILLAIN in such disarray. Since when has he ever been at a loss for words?"
+    H "You want me to..give you some closure? Answer some questions?"
+    V "I don't know if that's the term I would use, but yes. I suppose I'm in need of some..'closure'."
+    H "Why couldn't you have asked a guard? Talking to me specifically wasn't necessary."
+    "Besides, you could've been out of here by now if he just for clarification upfront."
+    V "You truly believe any of these people have the nerve to speak to me outright? Even now, cowards, all of them. They isolate me in this cell 
+    and don't even have the decency to conversate. I must still hold some charm, even in this state."
+    "Something in you makes you think it still isn't admiration they have for him, but to tell him this would only leave room for another one of his rants."
+    V "Besides, despite your horrific IQ and lack of style, you, uh..., "
+    extend "you seem to be the only option I have for a questionnaire."
+    "Flattering."
+    H "Alright. I guess I've got some time to spare for a couple of questions. What do you want to know?"
+    "Maybe you can get this over quicker if you ask the questions. Leaving VILLAIN to his own devices is a dangerous game, 
+    and this conversation has already been dragging on for too long as it is."
+    #ask some questions
+    "VILLAIN's goggle lense flickers, and he attempt to stand up, but it proves rather difficult without the use of his missing leg."
+    "His eye clenches shut, and he grips a fistful of his shirt, spine curved in a way that shatters the illusion of his prideful demeanor."
+    V "I don't need you thinking for me, HERO. I can ask my own questions."
+    
+        # This ends the game.
 
     return
