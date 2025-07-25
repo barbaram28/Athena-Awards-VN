@@ -38,23 +38,21 @@ label start:
     extend "You expected noise, but the only sound is the echo of your footsteps hitting the floor."
     "Turn left, then right, then left again."
 
-    "At the end of the hallway, there lies a cell. Stale, not beating, yet--no, you don't hear anything."
+    "At the end of the hallway, there lies a cell. Stale, not beating, yet--"
+    extend "no, you don't hear anything."
     "Strange."
     "You advance towards the chamber, and as you do, you see a figure sitting on the floor, back against the wall."
     " "
     V "HERO, you ghastly technophobe!" 
     V ". . . " 
-    extend "You should be ashamed of yourself for keeping me waiting for so long."
     hide hero buff
     show villain sassy at center:
         yalign 1
-    "Miss me so soon?"
+    extend "You should be ashamed of yourself for keeping me waiting for as long as you have."
     "There's the grating you haven't been able to forget. The splitting voice of VILLAIN. The earlier possibility that he 
     might've already become a problem in the past makes you ache with a different kind of displeasure."
     "If only the mob had disabled his voice synthesizer, you think to yourself."
-    "It'd certaintly be worth more than what most of his antics have cost you. "
-    extend "He's the kind of person to refresh someone's webpage simply to watch the loading screen, 
-    having no doubt it'll function the more the touchpad is clicked."
+    "It'd certaintly be worth more than what most of his antics have cost you."
     "Momentarily, you hear the faint pleas of a fleeting sound. The way you came seems to be calling you. It beckons you to leave, 
     and it desperately awaits your arrival back to the familiar exterior."
     "But you can't leave, as disappointing as it is. You're here for a reason, and you have to see it through."
@@ -76,7 +74,7 @@ label start:
     V "What, not in a good mood? You should see how it feels to be in a cell, HERO."
     H "I mean it. You shouldn't be taking this lightly. Just get whatever you wanted to say over with."
     V "Wh--"
-    H "In as {i}little{/i} words as possible. " 
+    H "--in as {i}little{/i} words as possible. " 
     extend "Please."
     ". . ."
     "His brittle smile shatters into an understanding expression. You've never seen him at such a loss for words before. 
@@ -84,25 +82,29 @@ label start:
     V "I..didn't tell you to come so I could insult you, as fun as that sounds."
     H "You didn't?"
     "Huh."
-    V "No, I,,I--we've been at this whole..cat-and-mouse game for quite a while now, haven't we? I soak in what glory I can,
+    V "No, I,,I--we've been at this whole..cat-and-mouse game for quite a while now, haven't we? "
+    extend "I soak in what glory I can,
     you get jealous and try to push me off my pedestal.."
     H "That's not--"
-    V "--well, I'm starting to believe that this is..the end of that chase."
+    V "--well, I'm starting to believe that this is. . .the end of that chase."
     "Is..he being serious? You thought the implications of the cage were enough to suggest that, but perhaps you were wrong."
-    "VILLAIN averts his eyes from you, and you can see sparks fly from his augmentations, almost as if his head is finally being put to a use for good."
+    "VILLAIN averts his eyes from you, and you can see sparks fly from his skull's augmentations, almost as if his head is finally being put to a good use."
     H "You just {i}now{/i} caught onto that?"
-    V "Byte me. Look, in truth, my predicament has left me to ponder some things. Some..attributes associated with the aftermath of my.."
+    V "Byte me. "
+    extend "Look, in truth, my predicament has left me to ponder some things. Some..attributes associated with the aftermath of my. . ."
     extend "(cough)."
     "You've never seen VILLAIN in such disarray. Since when has he ever been at a loss for words?"
-    H "You want me to..give you some closure? Answer some questions?"
-    V "I don't know if that's the term I would use, but yes. I suppose I'm in need of some..'closure'."
+    H "You want me to...give you closure? Answer some questions?"
+    V "I don't know if that's the term {i}I{/i} would use, but yes. I suppose I'm in need of some...'closure'."
     H "Why couldn't you have asked a guard? Talking to me specifically wasn't necessary."
-    "Besides, you could've been out of here by now if he just for clarification upfront."
-    V "You truly believe any of these people have the nerve to speak to me outright? Even now, cowards, all of them. They isolate me in this cell 
-    and don't even have the decency to conversate. I must still hold some charm, even in this state."
+    "Besides, you could've been out of here by now if he just asked for clarification upfront."
+    V "You truly believe any of these people have the nerve to speak to me outright? Even now, cowards, all of them. "
+    extend "They isolate me in this cell 
+    and don't even have the decency to conversate..."
+    V "I suppose I must still hold some charm, even in the state I'm in."
     "Something in you makes you think it still isn't admiration they have for him, but to tell him this would only leave room for another one of his rants."
     V "Besides, despite your horrific IQ and lack of style, you, uh..., "
-    extend "you seem to be the only option I have for a questionnaire."
+    extend "you seem to be the only option I have left for a questionnaire."
     "Flattering."
     H "Alright. I guess I've got some time to spare for a couple of questions. What do you want to know?"
     "Maybe you can get this over quicker if you ask the questions. Leaving VILLAIN to his own devices is a dangerous game, 
@@ -110,8 +112,20 @@ label start:
     #ask some questions
     "VILLAIN's goggle lense flickers, and he attempt to stand up, but it proves rather difficult without the use of his missing leg."
     "His eye clenches shut, and he grips a fistful of his shirt, spine curved in a way that shatters the illusion of his prideful demeanor."
-    V "I don't need you thinking for me, HERO. I can ask my own questions."
-    
+    V "I don't need you thinking for me, HERO. I can. . .I can ask my own questions."
+    "You raise an eyebrow, but it's hard not to feel at least a little bit of sympathy for him."
+    H "Do you..need help getting up?"
+    "VILLAIN raises a hand to keep you at bay, still hunched over himself."
+    V "No, I don't."
+    H "You sure? I'm sure I could--"
+    V "--you could {i}what{/i}, HERO? Help me from a distance?"
+    H "No, but--"
+    V "--just..Alt+Tab it."
+    "Even when at his worst, he still manages to spew those puns of his. Though they're the bane of your existence, you have to admit, 
+    that must take some dedication."
+    H "What questions have I not answered yet that you still want to know the answers to? I've covered almost every topic you care about possible."
+    V ""
+
         # This ends the game.
 
     return
