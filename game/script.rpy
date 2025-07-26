@@ -124,7 +124,38 @@ label start:
     "Even when at his worst, he still manages to spew those puns of his. Though they're the bane of your existence, you have to admit, 
     that must take some dedication."
     H "What questions have I not answered yet that you still want to know the answers to? I've covered almost every topic you care about possible."
-    V ""
+    "For a second, it almost seems as if VILLAIN will refuse to respond, his chin lowered and jaw clenched. His head tilts at an angle and a voice comes
+    out from underneath, but you suppose the sound is strained from the scratching of his neck."
+    V "What. . ."
+    extend "is going to happen to DAUGHTER?"
+    "Amidst all of the recent panic, you completely forgot he bears custody of a little girl. Unfortunately for society, the heathen's been trained like a dog to resemble her father, and pleasing him 
+    always seems to be paramount. You contemplate how off-putting it is to never hear him talk about her, despite her appearance on the occassional heist and sceme. It's hard to think he has any thoughts 
+    to spare for her, especially now."
+    ". . ."
+    "You guess being the daughter of a villain probably doesn't pay off as much as she's constantly made it out to be."
+    H "...Excuse me? I thought you didn't care about DAUGHTER. Why be concerned with her {i}now{/i}?"
+    V "Of course I'd be on edge regarding her livelihood. She's my off-spring. What kind of father would I be if I didn't want to assure she'll
+    be somewhere safe?"
+    "VILLAIN's tone turns sharp, and he flicks an open hand upward at your person."
+    H "Uh, the kind of dad that'd let his daughter go commit felonies with a smile on her face? If you ask me, it's a little too late to start caring for her wellbeing."
+    V "Oh please, she practically begs to come with me."
+    H "That doesn't mean you {i}let{/i} her????"
+    H "If DAUGHTER asked you to let her go on a murder spree, would you?"
+    V "I mean..., what's the context?"
+    "Oh dear god."
+    H "Then, what if she would want to..I,,I dont know--vandalize the city? You'd let her do that?"
+    V "She does that on a week-to-week basis, HERO. Just what point are you trying to make here?"
+    H "The point that I'm trying to--the point I'm trying to make is that you've CLEARLY never been a good father. Why should it matter to you if she ends up at the bottom of a ditch somewhere?"
+    V "Will she?"
+    " "
+    H "I,,I mean, not..likely?"
+    V "That's not an answer, HERO."
+    "A groan bellows from underneath your throat."
+    H "I don't know. "
+    extend "If I had to guess, she'll probably get put into a foster care system."
+    V "what?"
+    H "Y'know, like every other non-parented kid her age...?"
+    H "The system isn't amazing, but it's not anything horrific. She'll do fine."
 
         # This ends the game.
 
