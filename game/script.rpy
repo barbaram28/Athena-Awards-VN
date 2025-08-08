@@ -6,20 +6,200 @@
 define V = Character("VILLAIN", color="#ff0080")
 define H = Character("HERO", color="#ffee00")
 
+# Determines whether the pauses are active at all
+# default value: True
+default persistent.speech_pauses = True
+
+# Determines the pause length of commas and ellipses
+# default value: 0.15
+default persistent.speech_pause_comma = 0.15
+
+# Determines the pause length of periods, questions, em dashes, and so on
+# default value: 0.3
+default persistent.speech_pause_period = 0.3
+
+# Determines which version of pause to use
+# Version A: Generally better and suitable for the vast majority of projects, since its pause lengths are 
+#            relative to the text speed, it doesn't interfere with text shaders, and it allows lines with 
+#            lots of pauses to still be displayed with one click.
+# Version B: Doesn't have any of the above benefits, but it adds an audible pause in case you are using 
+#            text bleeps. With version 1, text bleeps keep going at a constant pace despite the visual pause, 
+#            so version 2 might be more natural in that case.
+# default value: "A"
+define speech_pause_version = "A"
+
+## Definitions ################################################################################################
+
+# Define what counts as a "comma" (shorter pause)
+# default value: [",", "..."]
+define speech_comma = [",", "..."]
+
+# Define what counts as a "period" (longer pause)
+# default value: [".", "?", "!", ":", ";", "—", "~"]
+define speech_period = [".", "?", "!", ":", ";", "—", "~"]
+
+# Define exceptions where any of the above symbols should not lead to a pause
+# default value: ["Mr.", "Mrs.", "Dr."]
+define speech_exceptions = ["Mr.", "Mrs.", "Dr."]
+
+# Define additional text tags that should not interfere with pauses. The default ones are already included
+#   For example, this will make sure that a line like "{b}What?!{/b} Are you serious?" still correctly registers
+#   a pause, even though "?!" is followed up by "{/b}" instead of a blank space.
+# example values: ["b", "a", "i"]
+# default value: []
+define speech_tags = []
+
+## Spaceless definitions ######################################################################################
+
+# Some punctuation marks do not require a space afterwards (which is how the need for a pause is usually detected).
+# I tried a hacky solution that will add a pause whenever any of the below punctuation marks appear, 
+#   UNLESS they are the last character in a line.
+
+# Feel free to disable them if this leads to unexpected behavior.
+# default value: True
+define speech_pauses_nospace = True
+
+# Comma-equivalents that require no space after
+# default value: ["，","、", "…", "——"]
+define speech_comma_nospace = ["，","、", "…", "——"]
+
+# Period-equivalents that require no space after
+# Note: If you use em-dashes [like—this] instead of [like — this], delete them from [speech_period] and add them down here!
+# default value: ["。", "？", "！", "；", "：", "……"]
+define speech_period_nospace = ["。", "？", "！", "；", "：", "……"]
+
+## The Function ###############################################################################################
+
+init python:
+    def speech_pause_adder(text_input):
+
+        tags = speech_tags + ["i", "b", "a", "color", "s", "size", "u", "alpha", "alt", "cps", "art", "font", "image", "k", "noalt", "outlinecolor", "plain", "rb", "rt", "shader"]
+        open_tags = ["space", "vspace", "w", "p", "nw", "fast", "done", "clear"]
+
+        pauses_add = {}
+
+        if "b" in speech_pause_version or "B" in speech_pause_version:
+            for i in speech_comma:
+                pauses_add[i + " "] = i + "{w=" + str(persistent.speech_pause_comma) + "} "
+                for j in tags:
+                    pauses_add[i + "{/" + j + "} "] = i + "{/" + j + "}{w=" + str(persistent.speech_pause_comma) + "} "
+                for j in open_tags:
+                    pauses_add[i + "{" + j + "} "] = i + "{" + j + "}{w=" + str(persistent.speech_pause_comma) + "} "
+            for i in speech_period:
+                pauses_add[i + " "] = i + "{w=" + str(persistent.speech_pause_period) + "} "
+                for j in tags:
+                    pauses_add[i + "{/" + j + "} "] = i + "{/" + j + "}{w=" + str(persistent.speech_pause_period) + "} "
+                for j in open_tags:
+                    pauses_add[i + "{" + j + "} "] = i + "{" + j + "}{w=" + str(persistent.speech_pause_period) + "} "
+            
+            pauses_exceptions = {}
+            for i in speech_exceptions:
+                pauses_exceptions[i + "{w=" + str(persistent.speech_pause_comma) + "} "] = i + " "
+                pauses_exceptions[i + "{w=" + str(persistent.speech_pause_period) + "} "] = i + " "
+                
+            for i in pauses_add:
+                text_input = text_input.replace(i, pauses_add[i])
+
+            for i in pauses_exceptions:
+                text_input = text_input.replace(i, pauses_exceptions[i])
+
+            if speech_pauses_nospace:
+                text_copy = ""
+                for i in range(len(text_input)):
+                    text_copy += text_input[i]
+                    if i < len(text_input)-1 and text_input[i:i+2] in speech_comma_nospace or text_input[i:i+2] in speech_period_nospace:
+                        continue
+                    elif i > 0 and text_input[i-1:i+1] in speech_comma_nospace:
+                        text_copy += "{w=" + str(persistent.speech_pause_comma) + "}"
+                    elif i > 0 and text_input[i-1:i+1] in speech_period_nospace:
+                        text_copy += "{w=" + str(persistent.speech_pause_period) + "}"
+                    elif text_input[i] in speech_comma_nospace and i < len(text_input)-1:
+                        text_copy += "{w=" + str(persistent.speech_pause_comma) + "}"
+                    elif text_input[i] in speech_period_nospace and i < len(text_input)-1:
+                        text_copy += "{w=" + str(persistent.speech_pause_period) + "}"
+                
+                text_input = text_copy
+
+        else:
+            comma_slow = (1/persistent.speech_pause_comma)/100
+            period_slow = (1/persistent.speech_pause_period)/100
+
+            for i in speech_comma:
+                pauses_add[i + " "] = i + "{cps=*" + str(comma_slow) + "} {/cps}"
+                for j in tags:
+                    pauses_add[i + "{/" + j + "} "] = i + "{/" + j + "}{cps=*" + str(comma_slow) + "} {/cps}"
+                for j in open_tags:
+                    pauses_add[i + "{" + j + "} "] = i + "{" + j + "}{cps=*" + str(comma_slow) + "} {/cps}"
+            for i in speech_period:
+                pauses_add[i + " "] = i + "{cps=*" + str(period_slow) + "} {/cps}"
+                for j in tags:
+                    pauses_add[i + "{/" + j + "} "] = i + "{/" + j + "}{cps=*" + str(period_slow) + "} {/cps}"
+                for j in open_tags:
+                    pauses_add[i + "{" + j + "} "] = i + "{" + j + "}{cps=*" + str(period_slow) + "} {/cps}"
+            
+            pauses_exceptions = {}
+            for i in speech_exceptions:
+                pauses_exceptions[i + "{cps=*" + str(comma_slow) + "} {/cps}"] = i + " "
+                pauses_exceptions[i + "{cps=*" + str(period_slow) + "} {/cps}"] = i + " "
+                
+            for i in pauses_add:
+                text_input = text_input.replace(i, pauses_add[i])
+
+            for i in pauses_exceptions:
+                text_input = text_input.replace(i, pauses_exceptions[i])
+
+            if speech_pauses_nospace:
+                text_copy = ""
+                for i in range(len(text_input)):
+                    text_copy += text_input[i]
+                    if i < len(text_input)-1 and text_input[i:i+2] in speech_comma_nospace or text_input[i:i+2] in speech_period_nospace:
+                        continue
+                    elif i > 0 and text_input[i-1:i+1] in speech_comma_nospace:
+                        text_copy += "{cps=*" + str(comma_slow) + "}"
+                    elif i > 0 and text_input[i-1:i+1] in speech_period_nospace:
+                        text_copy += "{cps=*" + str(period_slow) + "}"
+                    elif text_input[i] in speech_comma_nospace and i < len(text_input)-1:
+                        text_copy += "{cps=*" + str(comma_slow) + "}"
+                    elif text_input[i] in speech_period_nospace and i < len(text_input)-1:
+                        text_copy += "{cps=*" + str(period_slow) + "}"
+                    if (text_input[i] in speech_comma_nospace or text_input[i] in speech_period_nospace) and i < len(text_input)-1 or i > 0 and text_input[i-1:i+1] in speech_comma_nospace or i > 0 and text_input[i-1:i+1] in speech_period_nospace:
+                        text_copy += "\u200B{/cps}"
+            
+                text_input = text_copy
+
+        return text_input
+    
+
+    def add_speech_pauses(text_input):
+        if prev_filter:
+            text_input = prev_filter(text_input)
+
+        if persistent.speech_pauses is not True or preferences.text_cps == 0:
+            return text_input
+
+        return speech_pause_adder(text_input)
+
+    ## Initialization #############################################################################################
+    # If your project already makes use of [config.say_menu_text_filter], this makes sure
+    # your filter is also called in addition to this one.
+
+    prev_filter = config.say_menu_text_filter
+    config.say_menu_text_filter = add_speech_pauses
 
 # The game starts here.
 
 label start:
     
-    play music gameover
+    play music crime
 
     # Show a background. This uses a placeholder by default, but you can
     # add a file (named either "bg room.png" or "bg room.jpg") to the
     # images directory to show it.
 
-    scene miami:
-        zoom 2
+    scene cage:
+        zoom 0.35
         yalign 0.5
+        xalign 0.5
 
     # This shows a character sprite. A placeholder is used, but you can
     # replace it by adding a file named "eileen happy.png" to the images
@@ -43,12 +223,12 @@ label start:
     "Strange."
     "You advance towards the chamber, and as you do, you see a figure sitting on the floor, back against the wall."
     " "
-    V "HERO, you ghastly technophobe!" 
+    V "HERO...," 
     V ". . . " 
     hide hero buff
     show villain sassy at center:
         yalign 1
-    extend "You should be ashamed of yourself for keeping me waiting for as long as you have."
+    extend "you should be ashamed of yourself for keeping me waiting for as long as you have."
     "There's the grating you haven't been able to forget. The splitting voice of VILLAIN. The earlier possibility that he 
     might've already become a problem in the past makes you ache with a different kind of displeasure."
     "If only the mob had disabled his voice synthesizer, you think to yourself."
@@ -93,7 +273,7 @@ label start:
     V "Byte me. "
     extend "Look, in truth, my predicament has left me to ponder some things. Some..attributes associated with the aftermath of my. . ."
     extend "(cough)."
-    "You've never seen VILLAIN in such disarray. Since when has he ever been at a loss for words?"
+    "It's rare to find VILLAIN in such disarray. Since when has he ever been at a loss for words?"
     H "You want me to...give you closure? Answer some questions?"
     V "I don't know if that's the term {i}I{/i} would use, but yes. I suppose I'm in need of some...'closure'."
     H "Why couldn't you have asked a guard? Talking to me specifically wasn't necessary."
@@ -107,9 +287,49 @@ label start:
     extend "you seem to be the only option I have left for a questionnaire."
     "Flattering."
     H "Alright. I guess I've got some time to spare for a couple of questions. What do you want to know?"
-    "Maybe you can get this over quicker if you ask the questions. Leaving VILLAIN to his own devices is a dangerous game, 
+    "Maybe you can get this over quicker if you answer the questions before he can ask them. Leaving VILLAIN to his own devices is a dangerous game, 
     and this conversation has already been dragging on for too long as it is."
     #ask some questions
+    define visited = set()
+    menu travel:
+        set visited
+        "So, tomorrow...":
+            jump tomorrow
+        "About your equipment...":
+            jump equipment
+        "Your efforts against me...":
+            jump efforts
+    label tomorrow:
+        show villain sassy
+    H "So, tommorrow...there's been mention about the event happening later at night. Y'know, to avoid having {i}it{/i} accidentally attract the younger folk."
+    V "Apologies--{i}event{/i}? They're making an event out of me?"
+    " "
+    "Maybe that wasn't the best thing to bring up."
+    H "uh. . .Everyone is really happen to see you leave."
+    H "After tommorrow night, I heard some...festivities are planned to take place."
+    label equipment:
+        show villain sassy
+    H "About your equipment...Most of it will probably be disgarded to the High Council."
+    #show villain reaction
+    V "Wait, {i}they're{/i} taking ownership? What ever happened to \"it's too dangerous\"?"
+    H "I guess they decided it was the owner, not the product."
+    "You say this under your breath, but just loud enough for him to hear. He scoffs at the jab made at his actions."
+    V "What do they plan to do with my hardware? Just..keep hold of it?"
+    H "Who do you take them for? Obviously your equipment is going to be used for something."
+    H "Honestly, I'm not sure for what, but it'd be a waste to disgard all of that work."
+    V "{i}My{/i} work, in case you've forgotten. Shouldn't I have some say in the matter? My machinery is intended to be a tool for my recognition, not areas of governance. "
+    extend "It's a complete misuse of what I've worked to accomplish."
+    V "God knows the High Council won't give me any credit, either.."
+    H "Does...it really matter what you think? Not to be harsh, but. . .you'll be dead."
+    V " "
+    H "oh--I,,I was just saying what they'd think. Y'know, give you their point of view. Not that I actually--"
+    V "HERO. . ."
+    H "Sorry."
+    label efforts:
+        show villain sassy
+    H "Your efforts against me...were they worth it?"
+    V "Excuse me?"
+    label after_travel:
     "VILLAIN's goggle lense flickers, and he attempt to stand up, but it proves rather difficult without the use of his missing leg."
     "His eye clenches shut, and he grips a fistful of his shirt, spine curved in a way that shatters the illusion of his prideful demeanor."
     V "I don't need you thinking for me, HERO. I can. . .I can ask my own questions."
@@ -120,16 +340,17 @@ label start:
     H "You sure? I'm sure I could--"
     V "--you could {i}what{/i}, HERO? Help me from a distance?"
     H "No, but--"
-    V "--just..Alt+Tab it."
+    V "--just. . .alt+tab it."
     "Even when at his worst, he still manages to spew those puns of his. Though they're the bane of your existence, you have to admit, 
     that must take some dedication."
-    H "What questions have I not answered yet that you still want to know the answers to? I've covered almost every topic you care about possible."
+    H "What questions have I not answered yet that you still want a response to? I've covered almost every topic you care about possible."
     "For a second, it almost seems as if VILLAIN will refuse to respond, his chin lowered and jaw clenched. His head tilts at an angle and a voice comes
     out from underneath, but you suppose the sound is strained from the scratching of his neck."
     V "What. . ."
     extend "is going to happen to DAUGHTER?"
     "Amidst all of the recent panic, you completely forgot he bears custody of a little girl. Unfortunately for society, the heathen's been trained like a dog to resemble her father, and pleasing him 
-    always seems to be paramount. You contemplate how off-putting it is to never hear him talk about her, despite her appearance on the occassional heist and sceme. It's hard to think he has any thoughts 
+    always seems to be paramount."
+    "You contemplate how off-putting it is to never hear him talk about her, despite her appearance on the occassional heist and sceme. It's hard to think he has any thoughts 
     to spare for her, especially now."
     ". . ."
     "You guess being the daughter of a villain probably doesn't pay off as much as she's constantly made it out to be."
@@ -165,13 +386,13 @@ label start:
     V "These people aren't going to wait to decide what to do with her."
     V "They're going to tear her apart, HERO. Call me superstitious all you want, but she can't be left in society's care."
     V "There'll be nothing left of her, I promise you that. They're going to {b}kill{/b} DAUGHTER because of the things she's done in relation to me."
-    V "What if they even force her to present herself in...in tacky clothing? In a t-shirt and..white sneakers?"
-    "He gags at the thought, but come on. Really? There's a far worse fashion choice that needs to be confronted here."
-    H "Okay, stop."
-    H "Look, I get that you're all..worried for her, or something, but what do you want {i}me{/i} to do about it? Maybe she should've thought twice before following in your footsteps."
+    "For once, what he's telling you probably holds some truth. The way this town got violent when they had enough of VILLAIN's antics proves his worrying right."
+    "Besides, she's always taken after her father."
+    H "Look, I get that you're worried for her, but what do you want {i}me{/i} to do about it? I can't control her public image."
+    H "Maybe she should've thought twice before following in your footsteps."
     V "You want an 11-year-old to be independent?"
     "Good point."
-    H "No, but--mgh, unless you want me to somehow erase her sins against the law, there's really nothing I can do for her. My hands are tied."
+    H "No, but--mgh. . ., unless you want me to somehow erase her sins against the law, there's really nothing I can do for her. My hands are tied."
     V "You'd rather let her die, than do something to stop her death from happening? She's just a kid, and frankly--frankly, I...I can't do anything for her six feet under." 
     V "I need your help, HERO."
     V ". . .{b}please.{/b}"
