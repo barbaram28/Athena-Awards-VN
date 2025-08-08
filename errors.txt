@@ -2,9 +2,17 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 21: expected statement.
-    zoom 0.5
-          ^
+The label start is defined twice, at File "game/script.rpy", line 191:
+label start:
+and File "game/script.rpy", line 293:
+    label start:
+
+
+The label after_choices is defined twice, at File "game/script.rpy", line 313:
+    label after_choices:
+and File "game/script.rpy", line 352:
+    label after_choices:
+
 
 Ren'Py Version: Ren'Py 8.3.7.25031702
-Wed Jul 23 04:03:28 2025
+Fri Aug  8 16:39:59 2025

@@ -290,23 +290,28 @@ label start:
     "Maybe you can get this over quicker if you answer the questions before he can ask them. Leaving VILLAIN to his own devices is a dangerous game, 
     and this conversation has already been dragging on for too long as it is."
     #ask some questions
-    define visited = set()
-    menu travel:
-        set visited
+    label question_menu:
+    menu:
         "So, tomorrow...":
             jump tomorrow
         "About your equipment...":
             jump equipment
         "Your efforts against me...":
             jump efforts
+
+    label end_conversation:
+        "VILLAIN's goggle lense flickers, and he attempt to stand up, but it proves rather difficult without the use of his missing leg."
+
     label tomorrow:
         show villain sassy
-    H "So, tommorrow...there's been mention about the event happening later at night. Y'know, to avoid having {i}it{/i} accidentally attract the younger folk."
+    H "So, tommorrow...there's been mention about the event happening later at night. Y'know, to avoid having {i}it{/i} accidentally attract younger folk."
     V "Apologies--{i}event{/i}? They're making an event out of me?"
     " "
     "Maybe that wasn't the best thing to bring up."
-    H "uh. . .Everyone is really happen to see you leave."
+    H "uh. . .Everyone is really excited to see you go."
     H "After tommorrow night, I heard some...festivities are planned to take place."
+    jump question_menu
+
     label equipment:
         show villain sassy
     H "About your equipment...Most of it will probably be disgarded to the High Council."
@@ -325,11 +330,14 @@ label start:
     H "oh--I,,I was just saying what they'd think. Y'know, give you their point of view. Not that I actually--"
     V "HERO. . ."
     H "Sorry."
+    jump question_menu
+    
     label efforts:
         show villain sassy
     H "Your efforts against me...were they worth it?"
     V "Excuse me?"
-    label after_travel:
+    jump question_menu
+    
     "VILLAIN's goggle lense flickers, and he attempt to stand up, but it proves rather difficult without the use of his missing leg."
     "His eye clenches shut, and he grips a fistful of his shirt, spine curved in a way that shatters the illusion of his prideful demeanor."
     V "I don't need you thinking for me, HERO. I can. . .I can ask my own questions."

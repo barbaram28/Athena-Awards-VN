@@ -1,22 +1,32 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/script.rpy", line 328, in script
-    jump visited
-ScriptError: could not find label 'visited'.
+  File "game/script.rpy", line 294, in script call
+    call choice_loop
+  File "game/script.rpy", line 298, in script
+    if not choices:
+  File "game/script.rpy", line 298, in <module>
+    if not choices:
+NameError: name 'choices' is not defined
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "game/script.rpy", line 328, in script
-    jump visited
-  File "C:\Users\Melmiou\Desktop\renpy-8.3.7-sdk\renpy\ast.py", line 1712, in execute
-    rv = renpy.game.script.lookup(target)
-  File "C:\Users\Melmiou\Desktop\renpy-8.3.7-sdk\renpy\script.py", line 1103, in lookup
-    raise ScriptError("could not find label '%s'." % str(original))
-ScriptError: could not find label 'visited'.
+  File "game/script.rpy", line 294, in script call
+    call choice_loop
+  File "game/script.rpy", line 298, in script
+    if not choices:
+  File "C:\Users\Melmiou\Desktop\renpy-8.3.7-sdk\renpy\ast.py", line 1856, in execute
+    if renpy.python.py_eval(condition):
+  File "C:\Users\Melmiou\Desktop\renpy-8.3.7-sdk\renpy\python.py", line 1218, in py_eval
+    return py_eval_bytecode(code, globals, locals)
+  File "C:\Users\Melmiou\Desktop\renpy-8.3.7-sdk\renpy\python.py", line 1211, in py_eval_bytecode
+    return eval(bytecode, globals, locals)
+  File "game/script.rpy", line 298, in <module>
+    if not choices:
+NameError: name 'choices' is not defined
 
 Windows-10-10.0.26100 AMD64
 Ren'Py 8.3.7.25031702
 Athena Awards VN 1.0
-Tue Aug  5 17:15:25 2025
+Fri Aug  8 16:46:38 2025
