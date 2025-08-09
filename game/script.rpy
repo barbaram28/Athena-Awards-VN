@@ -290,8 +290,10 @@ label start:
     "Maybe you can get this over quicker if you answer the questions before he can ask them. Leaving VILLAIN to his own devices is a dangerous game, 
     and this conversation has already been dragging on for too long as it is."
     #ask some questions
+    define visited = set()
     label question_menu:
     menu:
+        set visited
         "So, tomorrow...":
             jump tomorrow
         "About your equipment...":
@@ -299,8 +301,7 @@ label start:
         "Your efforts against me...":
             jump efforts
 
-    label end_conversation:
-        "VILLAIN's goggle lense flickers, and he attempt to stand up, but it proves rather difficult without the use of his missing leg."
+    jump after_choices
 
     label tomorrow:
         show villain sassy
@@ -323,7 +324,25 @@ label start:
     H "Who do you take them for? Obviously your equipment is going to be used for something."
     H "Honestly, I'm not sure for what, but it'd be a waste to disgard all of that work."
     V "{i}My{/i} work, in case you've forgotten. Shouldn't I have some say in the matter? My machinery is intended to be a tool for my recognition, not areas of governance. "
-    extend "It's a complete misuse of what I've worked to accomplish."
+    V "It's a complete misuse of what I've worked to accomplish."
+    "\"Worked to accomplish.\""
+    "Clearly whatever he tried to amount to didn't end in his favor."
+    V "(sigh)...nevertheless, that isn't what I--"
+    H "You know, I bet the council would give me a payment in your weaponry if I asked."
+    V " "
+    V "You wouldn't."
+    H "Why wouldn't I? Not only would that be in favor of the city's security, but could you imagine how many more quests I'd be hired for?"
+    H "And here I thought fighting you gave me a good income..."
+    H "{size=*0.5}God, maybe I could retire a bit earlier than I thought..{/size}"
+    V "Retire?? HERO, you're 26. Why're you already thinking about retirement?"
+    H "Because what's the point in working, if I have enough cash to keep myself comfortable?"
+    V "What happened to the check you recieved for defeating me? Don't tell me you've spent it."
+    H "I didn't...I didn't exactly get that payment."
+    V "You what."
+    "Ever since your first encounter with VILLAIN, it's been abundantly clear to the both pf you that fighting eachother came with no hard feelings."
+    "Instead, while VILLAIN would be able to gain the recognition he desired, you'd recieve an income from stopping his weekly antics."
+    "I mean, it's not like he's ever caused too much harm."
+    extend "If he ever stepped out of line, you'd make sure to stop him. . .sometimes."
     V "God knows the High Council won't give me any credit, either.."
     H "Does...it really matter what you think? Not to be harsh, but. . .you'll be dead."
     V " "
@@ -336,8 +355,10 @@ label start:
         show villain sassy
     H "Your efforts against me...were they worth it?"
     V "Excuse me?"
+    H "Look at where you ended up."
     jump question_menu
     
+    label after_choices:
     "VILLAIN's goggle lense flickers, and he attempt to stand up, but it proves rather difficult without the use of his missing leg."
     "His eye clenches shut, and he grips a fistful of his shirt, spine curved in a way that shatters the illusion of his prideful demeanor."
     V "I don't need you thinking for me, HERO. I can. . .I can ask my own questions."
